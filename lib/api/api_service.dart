@@ -6,12 +6,12 @@ import '../models/slider_model.dart';
 import '../models/cart_model.dart';
 import '../models/seller_detail_model.dart';
 import '../models/seller_model.dart';
-import '../models/order_model.dart'; // <-- PERBAIKAN: Menambahkan import
+import '../models/order_model.dart'; 
 import '../models/product_review_model.dart';
 
 class ApiService {
   static const String _baseUrl =
-      'http://192.168.203.12/backend-lapakulbi/api/';
+      'http://172.16.30.251/backend-lapakulbi/api/';
 
   Future<List<Product>> getProducts({String query = ''}) async {
     try {

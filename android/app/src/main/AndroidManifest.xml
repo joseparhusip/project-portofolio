@@ -1,14 +1,36 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- Taruh di sini -->
+    <!-- CAMERA PERMISSIONS -->
     <uses-permission android:name="android.permission.CAMERA" />
-    <!-- Jika butuh akses galeri juga, tambahkan ini -->
-    <!-- <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> -->
+    
+    <!-- STORAGE PERMISSIONS - UNCOMMENT SEMUA YG DIBUTUHKAN -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    
+    <!-- UNTUK ANDROID 13+ (API 33+) - TAMBAHKAN INI -->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    
+    <!-- INTERNET PERMISSION (untuk upload gambar ke server) -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- CAMERA FEATURES -->
+    <uses-feature 
+        android:name="android.hardware.camera" 
+        android:required="false" />
+    <uses-feature 
+        android:name="android.hardware.camera.front" 
+        android:required="false" />
+    <uses-feature 
+        android:name="android.hardware.camera.autofocus" 
+        android:required="false" />
 
     <application
         android:label="frondend_application_new"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:requestLegacyExternalStorage="true"
+        android:enableOnBackInvokedCallback="true">
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -18,7 +40,13 @@
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="adjustResize">
-            <!-- ... sisa konfigurasi activity Anda ... -->
+            
+            <!-- TAMBAHKAN INI UNTUK CAMERA INTENT -->
+            <intent-filter>
+                <action android:name="android.media.action.IMAGE_CAPTURE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            
             <meta-data
               android:name="io.flutter.embedding.android.NormalTheme"
               android:resource="@style/NormalTheme"
@@ -28,16 +56,39 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <!-- ... sisa konfigurasi aplikasi Anda ... -->
+        
+        <!-- FILE PROVIDER UNTUK IMAGE PICKER -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+        
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
     </application>
-    <!-- ... sisa konfigurasi manifest Anda ... -->
+    
     <queries>
         <intent>
             <action android:name="android.intent.action.PROCESS_TEXT"/>
             <data android:mimeType="text/plain"/>
+        </intent>
+        <!-- TAMBAHKAN INI UNTUK CAMERA & GALLERY ACCESS -->
+        <intent>
+            <action android:name="android.media.action.IMAGE_CAPTURE" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.GET_CONTENT" />
+            <data android:mimeType="image/*" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.PICK" />
+            <data android:mimeType="image/*" />
         </intent>
     </queries>
 </manifest>
